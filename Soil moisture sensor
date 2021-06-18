@@ -1,0 +1,59 @@
+#include <LiquidCrystal.h>
+
+LiquidCrystal lcd(2,3,4,5,6,7);
+int sensor_pin= A0;
+
+int output_value;
+
+void setup(){
+
+  pinMode(8, OUTPUT);
+
+  Serial.begin(9600);
+ lcd.begin(16, 2);
+  lcd.setCursor(0, 0);
+  lcd.print("Automatic Plant");
+  lcd.setCursor(0, 1);
+  lcd.print("Watering System");
+  delay(4000);
+  lcd.clear();
+
+  delay(2000);
+
+}
+
+void loop(){
+
+  output_value= analogRead (sensor_pin);
+
+  output_value= map (output_value,1023, 200, 0, 100);
+
+  Serial.print("Moisture:");
+
+  Serial.print(output_value);
+
+  Serial.println("%");
+ lcd.setCursor(0, 0);
+  lcd.print("SoilMoisture:");
+  lcd.print(output_value);
+  lcd.print("%");
+   
+ 
+ 
+if (output_value<70){
+
+  digitalWrite(8, LOW);
+lcd.setCursor(0, 1);
+ lcd.print("Moter ON ");
+}
+
+else{
+
+  digitalWrite (8,HIGH);  
+ lcd.setCursor(0, 1);
+ lcd.print("Moter OFF ");
+}
+
+delay (1000);
+
+}
